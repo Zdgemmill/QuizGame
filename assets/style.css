@@ -29,7 +29,8 @@ h4 {
     justify-content: center;
 }
 
-.btn {
+.btn,
+#btn-start {
     color: white;
     background-color: purple;
     display: flex;
@@ -42,3 +43,11 @@ h4 {
 .btn:hover {
     background-color: black;
 }
+
+;
+
+#btn-start:hover {
+    background-color: black;
+}
+
+;
