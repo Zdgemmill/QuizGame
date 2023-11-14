@@ -6,6 +6,8 @@ var questionEl = document.querySelector("#question");
 var timerEl = document.querySelector(".time");
 var button = document.querySelector("#buttons");
 var msgEl = document.querySelector(".msg");
+var form = document.getElementsByClassName("form");
+
 
 var userScore = 0;
 
@@ -124,6 +126,7 @@ function checkAnswer(selectedButton) {
     if (selectedAnswerText === correctAnswerText) {
         timeLeft += 10;
         userScore += 10;
+        msgEl.classList.add("msg");
         msgEl.innerHTML = "Correct!";
     } else {
         timeLeft -= 10;
@@ -147,14 +150,57 @@ function getCurrentQuestionCorrectAnswer() {
     return correctAnswerText;
 }
 
+// Short circuiting: LOOK THIS UP
+var highScoresList = JSON.parse(localStorage.getItem('highscores')) || []
 
-//this is for endgame
-var intialsForm = document.createElement("form");
+function addHighScores(userInfo) {
+    highScoresList.push(userInfo);
+    localStorage.setItem('highscores', JSON.stringify(highScoresList))
+}
+
+function redirect() {
+    window.location.href = "./highscores.html";
+}
+
+function displayHighScores() {
+    var displayedScores = document.createElement("h2");
+    if (highScoresList.length == 0) {
+        highscoresSection.innerHTML = "No socres yet.";
+        console.log(highScoresList);
+        console.log(highscoresSection);
+        displayedScores.innerHTML = "this is a test";
+    }
+
+}
 
 function endGame() {
+    var intialsForm = document.createElement("form");
+    var initialLable = document.createElement("label");
+    var initialInput = document.createElement("input");
+    var initialSubmit = document.createElement("input");
+    initialSubmit.setAttribute("type", "submit");
+    initialSubmit.setAttribute("value", "submit");
+    initialInput.setAttribute("placeholder", "Initials")
+    initialLable.innerHTML = "Enter initials here: ";
+    initialSubmit.innerHTML = "Submit";
+    initialSubmit.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        addHighScores({ initials: initialInput.value, score: userScore });
+        redirect();
+
+
+    });
+    intialsForm.append(initialLable);
+    intialsForm.append(initialInput);
+    intialsForm.append(initialSubmit);
+    intialsForm.classList.add("form");
+
     questionEl.innerHTML = "You scored a " + userScore + "."
     button.innerHTML = "";
     msgEl.innerHTML = "";
+    bodyEl.appendChild(intialsForm);
 
 
 };
+
